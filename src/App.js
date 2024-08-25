@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-import ListaProdutos from './componentes/ListaProdutos';
+import logo from "./logo.svg";
+import "./App.css";
+import Lista from "./Componentes/Lista";
+import axios from "axios";
+import React from "react";
 
-const produtos = [{
-  nome : "teste",
-  preco: 40.00,
-},
-{
-  nome:"teste2",
-  preco:40.00,
-},
-];
-
+// const produtos = [{
+//   nome:"Roblox",
+//   preco: 29.99,
+//   },
+//   {
+//     nome:"Minecraft",
+//     preco: 60.00,
+//     },
+// ];
 
 function App() {
-  return (
- <div>
-    <h1>Lista Produtos</h1>
-    <ListaProdutos produtos = {produtos} />
+  const [produtos, setProdutos] = React.useState([]);
 
- </div>
+  React.useEffect(() => {
+    getProdutos();
+  }, []);
+
+  async function getProdutos() {
+    await axios
+      .get("https://app-api-tapwm.onrender.com/api/produtos")
+      .then((res) => {
+        setProdutos(res.data);
+        console.log(res.data);
+      });
+  }
+
+  return (
+    <div>
+      <h1>Lista Produtos</h1>
+      {produtos.map((p) => (
+        <>
+          <p>{p.nome}</p>
+          <p>{p.preco}</p>
+        </>
+      ))}
+    </div>
   );
 }
 
